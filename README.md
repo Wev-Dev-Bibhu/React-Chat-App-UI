@@ -49,7 +49,7 @@ To use a Spring Boot(AWS) backend instead:
 react-dev-frontend/
 ├── public/
 ├── src/
-│   ├── components/
+│   ├── Components/
 │   ├── App.js
 │   └── index.js
 ├── package.json

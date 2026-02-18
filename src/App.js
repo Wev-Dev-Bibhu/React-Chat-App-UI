@@ -1,15 +1,15 @@
 import './App.css';
-import SignIn from './components/SignIn';
+import SignIn from './Components/SignIn';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
-import ChatScreen from './components/ChatScreen';
-import SignUp from './components/SignUp';
+import Header from './Components/Header';
+import Sidebar from './Components/Sidebar';
+import ChatScreen from './Components/ChatScreen';
+import SignUp from './Components/SignUp';
 import { useEffect } from 'react';
 import Cookies from 'universal-cookie';
 import { useSnackbar } from 'notistack';
-import Profile from './components/Profile';
-import Settings from './components/Settings';
+import Profile from './Components/Profile';
+import Settings from './Components/Settings';
 
 
 function App() {
