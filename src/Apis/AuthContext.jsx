@@ -1,16 +1,18 @@
-import React, { createContext, useState, useMemo } from "react";
+import React, { createContext, useState, useMemo, useEffect } from "react";
 import PropTypes from "prop-types";
 
 const BACKEND_URLS = {
   local: "http://localhost:5000",
   render: "https://react-chat-app-node-js-server.onrender.com",
-  aws: "https://your-aws-endpoint.amazonaws.com",
 };
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+const [currentUser, setCurrentUser] = useState(() => {
+  const savedUser = localStorage.getItem('currentUser');
+  return savedUser ? JSON.parse(savedUser) : null;
+});
 
   const getInitialBackend = () => {
     const saved = localStorage.getItem("selectedBackend");
@@ -26,6 +28,15 @@ export const AuthProvider = ({ children }) => {
     setBackendKey(key);
     setApiUrl(BACKEND_URLS[key]);
   };
+
+  useEffect(() => {
+  if (currentUser) {
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+  } else {
+    localStorage.removeItem('currentUser');
+  }
+}, [currentUser]);
+
 
   const contextValue = useMemo(() => ({
     currentUser,

@@ -1,4 +1,3 @@
-// useApi.js
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { useContext } from "react";
@@ -71,11 +70,24 @@ export const ScreenApis = () => {
         }
     };
 
+    const logoutUser = async (userID) => {
+        try {
+            await axios.post(`${apiUrl}/logout`, {
+                userID,
+                headers: { "Content-Type": "application/json" },
+            });
+            return true;
+        } catch (error) {
+            throw error.response?.data || error.message;
+        }
+    };
+
     return {
         signUpApi,
         signInApi,
         fetchAllUsers,
         fetchUserMessages,
         updateUserProfile,
+        logoutUser,
     };
 };

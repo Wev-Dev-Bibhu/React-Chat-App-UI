@@ -1,14 +1,18 @@
 import { useSnackbar } from 'notistack';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { Tooltip } from "@mui/material";
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import Cookies from 'universal-cookie';
+import { AuthContext } from "../apis/AuthContext";
+import { ScreenApis } from "../apis/ScreenApis";
 
 const Sidebar = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { enqueueSnackbar } = useSnackbar();
+    const { logoutUser } = ScreenApis();
+    const { currentUser } = useContext(AuthContext);
 
 
     const [tabState, setTabState] = useState("");
@@ -22,17 +26,30 @@ const Sidebar = () => {
     useEffect(() => {
         setTabState(window.location.pathname);
     }, []);
-
     useEffect(() => {
-        const cookie = new Cookies()
+        const cookie = new Cookies();
 
-        if (location.pathname === "/logout") {
-            navigate('/')
-            cookie.remove('token')
-            cookie.remove('userID')
-            enqueueSnackbar("Logged out successfully", { variant: "success" })
-        }
-    }, [enqueueSnackbar, location.pathname, navigate])
+        const handleLogout = async () => {
+            if (location.pathname === "/logout") {
+                try {
+                    const check = await logoutUser(currentUser.id);
+                    if (check) {
+                        cookie.remove('token');
+                        cookie.remove('userID');
+                        enqueueSnackbar("Logged out successfully", { variant: "success" });
+                        navigate('/');
+                    } else {
+                        enqueueSnackbar("Logout failed", { variant: "error" });
+                    }
+                } catch (error) {
+                    enqueueSnackbar("Logout failed", { variant: "error" });
+                }
+            }
+        };
+
+        handleLogout();
+    }, [location.pathname, navigate, enqueueSnackbar]);
+
 
 
     return (

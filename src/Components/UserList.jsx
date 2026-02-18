@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ScreenApis } from '../Apis/ScreenApis';
-import { AuthContext } from '../Apis/AuthContext';
+import { ScreenApis } from '../apis/ScreenApis';
+import { AuthContext } from '../apis/AuthContext';
 
 const UserList = (props) => {
   const { fetchAllUsers } = ScreenApis();
@@ -63,9 +63,9 @@ const UserList = (props) => {
             onClick={() => setChatUser(chat)}
           >
             <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gray-300 flex items-center justify-center font-bold text-white mr-3">
-              {chat.profileImage ? (
+              {chat.avatar ? (
                 <img
-                  src={chat.profileImage}
+                  src={chat.avatar}
                   alt={chat.fullname}
                   className="w-full h-full object-cover"
                 />

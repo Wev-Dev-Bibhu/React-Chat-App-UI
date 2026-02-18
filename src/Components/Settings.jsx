@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../Apis/AuthContext";
+import { AuthContext } from "../apis/AuthContext";
 
 const Settings = () => {
     const { apiUrl, changeBackend } = useContext(AuthContext);
@@ -8,7 +8,6 @@ const Settings = () => {
     const backendOptions = {
         local: "http://localhost:5000",
         render: "https://react-chat-app-node-js-server.onrender.com",
-        aws: "https://your-aws-api-url.com",
     };
 
     // Set initial selection based on current apiUrl
@@ -41,7 +40,7 @@ const Settings = () => {
                         <option value="local">Localhost</option>
                     }
                     <option value="render">Render</option>
-                    <option value="aws">AWS</option>
+                    {/* <option value="aws">AWS</option> */}
                 </select>
 
                 <div className="mt-6">

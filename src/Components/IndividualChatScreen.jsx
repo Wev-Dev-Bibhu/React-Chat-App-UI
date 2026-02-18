@@ -4,8 +4,8 @@ import CallIcon from "@mui/icons-material/Call";
 import { Tooltip } from "@mui/material";
 import InputEmoji from "react-input-emoji";
 import { io } from "socket.io-client";
-import { AuthContext } from "../Apis/AuthContext";
-import { ScreenApis } from "../Apis/ScreenApis";
+import { AuthContext } from "../apis/AuthContext";
+import { ScreenApis } from "../apis/ScreenApis";
 
 const IndividualChatScreen = (props) => {
   const { fetchUserMessages } = ScreenApis();
@@ -93,11 +93,20 @@ const IndividualChatScreen = (props) => {
   return (
     <div className="relative h-full bg-gray-800 flex flex-col border-l-[1px] border-slate-500">
       <header className="flex items-center justify-between px-4 py-3 border-b border-slate-500 bg-gray-900 text-white shadow-sm">
-        <div>
-          <h1 className="text-lg font-semibold">{chatUser.fullname}</h1>
-          <span className={`text-sm ${chatUser.login ? "text-green-500" : "text-gray-500"}`}>
-            {chatUser.login ? "online" : "offline"}
-          </span>
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 bg-purple-200 rounded-full flex items-center justify-center font-bold text-purple-700">
+                <img
+                  src={chatUser.avatar}
+                  alt="Profile"
+                  className="rounded-full"
+                />
+              </div>
+              <div className="flex flex-col">
+                <h1 className="text-lg font-semibold">{chatUser.fullname}</h1>
+                <span className={`text-sm ${chatUser.login ? "text-green-500" : "text-gray-500"}`}>
+                  {chatUser.login ? "online" : "offline"}
+                </span>
+              </div>
         </div>
 
         <div className="flex space-x-5 text-gray-500 pr-5">
@@ -113,15 +122,6 @@ const IndividualChatScreen = (props) => {
             className={`flex items-${msg.sender === currentUser.id ? "end" : "start"} space-x-3 ${msg.sender === currentUser.id ? "justify-end" : ""
               }`}
           >
-            {msg.sender !== currentUser.id && (
-              <div className="w-10 h-10 bg-purple-200 rounded-full flex items-center justify-center font-bold text-purple-700">
-                <img
-                  src={chatUser.profileImage}
-                  alt="User Profile"
-                  className="rounded-full"
-                />
-              </div>
-            )}
             <div>
               <div
                 className={`p-3 rounded-lg max-w-xs ${msg.sender === currentUser.id
@@ -130,11 +130,13 @@ const IndividualChatScreen = (props) => {
                   }`}
               >
                 <p className="text-sm">{msg.message}</p>
-                <p className="text-xs mt-1 text-gray-500">{msg.created_at}</p>
+                <p className={`text-xs mt-1 ${msg.sender === currentUser.id ? "text-gray-500" : "text-gray-200"}`}>{
+                  msg.created_at ? new Date(msg.created_at).toLocaleString() : new Date().toLocaleString()
+                }</p>
               </div>
-              {msg.sender !== currentUser.id && (
+              {/* {msg.sender !== currentUser.id && (
                 <p className="text-xs font-semibold text-slate-200 mt-1">{msg.sender}</p>
-              )}
+              )} */}
             </div>
           </div>
         ))}

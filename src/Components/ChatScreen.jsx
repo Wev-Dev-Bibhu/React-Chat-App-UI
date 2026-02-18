@@ -16,7 +16,7 @@ const ChatScreen = () => {
             <div className="flex flex-grow gap-4">
 
                 <div className="w-80 border-slate-400">
-                    <UserList setChatUser={handleChatUser} currentUser={{ username: "YourUsername", fullname: "Your Full Name" }} />
+                    <UserList setChatUser={handleChatUser} currentUser={{ username: "YourUsername", fullname: "Your Full Name", avatar: "" }} />
                 </div>
 
                 <div className="flex-grow rounded-md overflow-hidden shadow-slate-300">
