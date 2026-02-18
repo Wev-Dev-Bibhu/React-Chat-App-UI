@@ -3,8 +3,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CloseIcon from "@mui/icons-material/Close";
 import { Tooltip } from "@mui/material";
-import { AuthContext } from "../Apis/AuthContext";
-import { ScreenApis } from "../Apis/ScreenApis";
+import { AuthContext } from "../apis/AuthContext";
+import { ScreenApis } from "../apis/ScreenApis";
 import { useSnackbar } from "notistack";
 
 const Profile = () => {

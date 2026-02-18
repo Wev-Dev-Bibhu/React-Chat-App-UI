@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { ScreenApis } from "../Apis/ScreenApis";
+import { ScreenApis } from "../apis/ScreenApis";
 import { useSnackbar } from "notistack";
+import { AuthContext } from "../apis/AuthContext";
 
 const SignUp = () => {
     const { signUpApi } = ScreenApis();
     const navigate = useNavigate();
     const { enqueueSnackbar } = useSnackbar();
-
+    const { setCurrentUser } = useContext(AuthContext);
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -42,6 +43,7 @@ const SignUp = () => {
                 email: signUpFormData.email,
                 password: signUpFormData.password,
             });
+            setCurrentUser(response.data.userData);
             enqueueSnackbar("Signup successful", { variant: response.status });
             navigate("/dashboard");
         } catch (err) {
