@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../apis/AuthContext";
+import { AuthContext } from "../Apis/AuthContext";
 
 const Settings = () => {
     const { apiUrl, changeBackend } = useContext(AuthContext);

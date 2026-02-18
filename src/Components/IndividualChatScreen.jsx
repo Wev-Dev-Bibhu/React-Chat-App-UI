@@ -4,8 +4,8 @@ import CallIcon from "@mui/icons-material/Call";
 import { Tooltip } from "@mui/material";
 import InputEmoji from "react-input-emoji";
 import { io } from "socket.io-client";
-import { AuthContext } from "../apis/AuthContext";
-import { ScreenApis } from "../apis/ScreenApis";
+import { AuthContext } from "../Apis/AuthContext";
+import { ScreenApis } from "../Apis/ScreenApis";
 
 const IndividualChatScreen = (props) => {
   const { fetchUserMessages } = ScreenApis();

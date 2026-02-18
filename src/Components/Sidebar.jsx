@@ -4,8 +4,8 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { Tooltip } from "@mui/material";
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import Cookies from 'universal-cookie';
-import { AuthContext } from "../apis/AuthContext";
-import { ScreenApis } from "../apis/ScreenApis";
+import { AuthContext } from "../Apis/AuthContext";
+import { ScreenApis } from "../Apis/ScreenApis";
 
 const Sidebar = () => {
     const navigate = useNavigate();

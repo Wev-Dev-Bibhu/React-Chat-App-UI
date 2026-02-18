@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ScreenApis } from '../apis/ScreenApis';
-import { AuthContext } from '../apis/AuthContext';
+import { ScreenApis } from '../Apis/ScreenApis';
+import { AuthContext } from '../Apis/AuthContext';
 
 const UserList = (props) => {
   const { fetchAllUsers } = ScreenApis();
