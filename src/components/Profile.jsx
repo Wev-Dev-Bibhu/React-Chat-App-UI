@@ -12,14 +12,9 @@ const Profile = () => {
     const [activeTab, setActiveTab] = useState("overview");
     const { currentUser, setCurrentUser } = useContext(AuthContext);
     const { enqueueSnackbar } = useSnackbar();
-
-    // Profile state
     const [profile, setProfile] = useState(currentUser);
-    console.log(profile);
-
-
-    // Editing state for Overview tab
     const [isEditing, setIsEditing] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const tabs = [
         { id: "overview", label: "Overview" },
@@ -33,15 +28,16 @@ const Profile = () => {
         e.preventDefault();
 
         try {
+            setLoading(true);
             const data = await updateUserProfile(profile);
             setCurrentUser(data.data.userData);
             enqueueSnackbar(data.message, { variant: data.status });
             setIsEditing(false);
         } catch (err) {
-            console.error("SignIn error:", err);
+            console.error("Update error:", err);
             enqueueSnackbar(err.message, { variant: err.status });
         } finally {
-            // setLoading(false);
+            setLoading(false);
         }
     };
 
@@ -57,11 +53,17 @@ const Profile = () => {
                 {/* Profile Image */}
                 <div className="relative grid place-items-center">
                     <div className="w-40 h-40 rounded-full border-4 border-gray-700 overflow-hidden">
-                        <img
-                            src={profile?.avatar ?? "https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png"}
-                            alt="User"
-                            className="w-full h-full object-cover"
-                        />
+                        {
+                            profile?.avatar ? (
+                                <img
+                                    src={profile?.avatar}
+                                    alt="User"
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <span className="text-9xl text-gray-500 bg-gray-300 w-full h-full flex items-center justify-center">{profile.fullname.charAt(0)}</span>
+                            )
+                        }
                     </div>
 
                 </div>
@@ -204,14 +206,14 @@ const Profile = () => {
                                 </div>
                             </div>
 
-                            {/* Save/Cancel Buttons */}
                             <div className="mt-6 flex space-x-4">
                                 {isEditing && (
                                     <>
                                         <Tooltip placement="top" title="Save">
                                             <button
                                                 onClick={handleSave}
-                                                className="p-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full flex items-center"
+                                                disabled={loading}
+                                                className={`p-2 bg-purple-600 hover:bg-purple-700 text-white rounded-full flex items-center ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                                             >
                                                 <DoneIcon />
                                             </button>
@@ -219,7 +221,8 @@ const Profile = () => {
                                         <Tooltip placement="top" title="Cancel">
                                             <button
                                                 onClick={handleCancel}
-                                                className="p-2 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center"
+                                                disabled={loading}
+                                                className={`p-2 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                                             >
                                                 <CloseIcon />
                                             </button>

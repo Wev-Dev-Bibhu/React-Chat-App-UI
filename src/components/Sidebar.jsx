@@ -24,7 +24,7 @@ const Sidebar = () => {
     };
 
     useEffect(() => {
-        setTabState(window.location.pathname);
+        setTabState(globalThis.location.pathname);
     }, []);
     useEffect(() => {
         const cookie = new Cookies();
@@ -42,6 +42,7 @@ const Sidebar = () => {
                         enqueueSnackbar("Logout failed", { variant: "error" });
                     }
                 } catch (error) {
+                    console.log(error);
                     enqueueSnackbar("Logout failed", { variant: "error" });
                 }
             }
@@ -56,11 +57,19 @@ const Sidebar = () => {
         <div className="w-[80px] h-screen absolute z-10 flex justify-evenly flex-col drop-shadow-md p-2 bg-gray-800">
             <section className="h-[10%] w-full flex justify-center items-center">
                 <div className="flex w-fit px-1.25 py-1.25 shadow-box-up rounded-2xl dark:bg-box-dark dark:shadow-box-dark-out">
-                    <div className="dark:shadow-buttons-box-dark rounded-2xl w-full px-1.5 py-1.5 md:px-2 md:py-2 bg-purple-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path>
-                        </svg>
-                    </div>
+                    {
+                        currentUser?.avatar ? (
+                            <Tooltip placement="right" title={currentUser.fullname} onClick={() => navigate('/profile')}>
+                                <img src={currentUser.avatar} alt="avatar" className="w-10 h-10 border-gray-700 border-2 object-cover rounded-full cursor-pointer" />
+                            </Tooltip>
+                        ) : (
+                            <div className="dark:shadow-buttons-box-dark rounded-2xl w-full px-1.5 py-1.5 md:px-2 md:py-2 bg-purple-200">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path>
+                                </svg>
+                            </div>
+                        )
+                    }
                 </div>
             </section>
             <section className="h-[50%] w-full pt-10">
@@ -69,7 +78,7 @@ const Sidebar = () => {
                 >
                     <label
                         htmlFor="dashboard"
-                        className="cursor-pointer has-[:checked]:shadow-lg has-[:checked]:shadow-slate-700 relative w-full h-16 p-4 ease-in-out duration-300 border-solid border-black/10 has-[:checked]:border group flex flex-row gap-3 items-center justify-center rounded-xl"
+                        className="cursor-pointer has-checked:shadow-lg has-checked:shadow-slate-700 relative w-full h-16 p-4 ease-in-out duration-300 border-solid border-black/10 has-checked:border group flex flex-row gap-3 items-center justify-center rounded-xl"
                     >
                         <input
                             className="hidden peer/expand"
@@ -96,7 +105,7 @@ const Sidebar = () => {
                     </label>
                     <label
                         htmlFor="profile"
-                        className="cursor-pointer has-[:checked]:shadow-lg has-[:checked]:shadow-slate-700 relative w-full h-16 p-4 ease-in-out duration-300 border-solid border-black/10 has-[:checked]:border group flex flex-row gap-3 items-center justify-center text-black rounded-xl"
+                        className="cursor-pointer has-checked:shadow-lg has-checked:shadow-slate-700 relative w-full h-16 p-4 ease-in-out duration-300 border-solid border-black/10 has-checked:border group flex flex-row gap-3 items-center justify-center text-black rounded-xl"
                     >
                         <input className="hidden peer/expand" type="radio" name="path" id="profile"
                             value="/profile"
@@ -118,7 +127,7 @@ const Sidebar = () => {
                     </label>
                     <label
                         htmlFor="messages"
-                        className="cursor-pointer has-[:checked]:shadow-lg has-[:checked]:shadow-slate-700 relative w-full h-16 p-4 ease-in-out duration-300 border-solid border-black/10 has-[:checked]:border group flex flex-row gap-3 items-center justify-center text-black rounded-xl"
+                        className="cursor-pointer has-checked:shadow-lg has-checked:shadow-slate-700 relative w-full h-16 p-4 ease-in-out duration-300 border-solid border-black/10 has-checked:border group flex flex-row gap-3 items-center justify-center text-black rounded-xl"
                     >
                         <input
                             className="hidden peer/expand"
@@ -146,9 +155,9 @@ const Sidebar = () => {
                             </svg>
                         </Tooltip>
                     </label>
-                    <label
+                    {/* <label
                         htmlFor="help"
-                        className="cursor-pointer has-[:checked]:shadow-lg has-[:checked]:shadow-slate-700 relative w-full h-16 p-4 ease-in-out duration-300 border-solid border-black/10 has-[:checked]:border group flex flex-row gap-3 items-center justify-center text-black rounded-xl"
+                        className="cursor-pointer has-checked:shadow-lg has-checked:shadow-slate-700 relative w-full h-16 p-4 ease-in-out duration-300 border-solid border-black/10 has-checked:border group flex flex-row gap-3 items-center justify-center text-black rounded-xl"
                     >
                         <input className="hidden peer/expand" type="radio" name="path" id="help"
                             value="/help"
@@ -168,10 +177,10 @@ const Sidebar = () => {
                                 <path d="M11 7h2v7h-2zm0 8h2v2h-2z"></path>
                             </svg>
                         </Tooltip>
-                    </label>
+                    </label> */}
                     <label
                         htmlFor="settings"
-                        className="cursor-pointer has-[:checked]:shadow-lg has-[:checked]:shadow-slate-700 relative w-full h-16 p-4 ease-in-out duration-300 border-solid border-black/10 has-[:checked]:border group flex flex-row gap-3 items-center justify-center text-black rounded-xl"
+                        className="cursor-pointer has-checked:shadow-lg has-checked:shadow-slate-700 relative w-full h-16 p-4 ease-in-out duration-300 border-solid border-black/10 has-checked:border group flex flex-row gap-3 items-center justify-center text-black rounded-xl"
                     >
                         <input
                             className="hidden peer/expand"

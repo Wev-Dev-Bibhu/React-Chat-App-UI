@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
+import PropTypes from "prop-types";
 import { ScreenApis } from '../apis/ScreenApis';
 import { AuthContext } from '../apis/AuthContext';
+import Loader from './helpers/Loader';
 
 const UserList = (props) => {
   const { fetchAllUsers } = ScreenApis();
@@ -8,6 +10,7 @@ const UserList = (props) => {
   const [userList, setUserList] = useState([]);
   const [chatUser, setChatUser] = useState(false);
   const { currentUser } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
 
   useEffect(() => {
@@ -16,14 +19,22 @@ const UserList = (props) => {
 
   useEffect(() => {
     const fetchUsers = async () => {
+      if (Object.entries(currentUser).length === 0) return;
+      setLoading(true);
       const userID = currentUser.id;
       const data = await fetchAllUsers({ userID });
+      setLoading(false);
       setUserList(data.data.users);
     };
     fetchUsers();
-  }, [currentUser.id]);
+  }, [currentUser]);
 
   // Fallback for loading or empty list
+  if (loading) {
+    return (
+      <Loader />
+    );
+  }
   if (!Array.isArray(userList) || userList.length === 0) {
     return (
       <div className="text-center text-gray-400">
@@ -54,11 +65,10 @@ const UserList = (props) => {
 
       <h1 className="text-lg text-[#9ca3af] font-semibold mb-4">Recent</h1>
       <div className="space-y-3 overflow-y-auto max-h-[calc(100vh-200px)] scrollbar-hide">
-        {userList.map((chat) => (
-          <div
-            role='button'
+        {userList.filter((chat) => chat.fullname.toLowerCase().includes(searchChat.toLowerCase())).map((chat) => (
+          <button
             key={chat.id}
-            className={`flex items-center p-3 rounded-lg hover:bg-gray-700 transition cursor-pointer ${chatUser?.id === chat.id ? 'bg-gray-700' : 'bg-gray-800'
+            className={`w-full outline-none flex items-center p-3 rounded-lg hover:bg-gray-700 transition cursor-pointer ${chatUser?.id === chat.id ? 'bg-gray-700' : 'bg-gray-800'
               }`}
             onClick={() => setChatUser(chat)}
           >
@@ -96,7 +106,7 @@ const UserList = (props) => {
                 )}
               </div>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </div>
@@ -105,3 +115,8 @@ const UserList = (props) => {
 };
 
 export default UserList;
+
+UserList.propTypes = {
+  setChatUser: PropTypes.func.isRequired,
+};
+

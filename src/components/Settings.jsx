@@ -27,16 +27,17 @@ const Settings = () => {
             <div className="max-w-md mx-auto bg-gray-800 rounded-xl shadow-lg p-6">
                 <h2 className="text-2xl font-bold mb-6 text-center">Settings</h2>
 
-                <label className="block mb-2 text-sm font-medium text-gray-300">
+                <label htmlFor="backend" className="block mb-2 text-sm font-medium text-gray-300">
                     Select Backend Server
                 </label>
                 <select
+                    id="backend"
                     value={selectedBackend}
                     onChange={(e) => setSelectedBackend(e.target.value)}
                     className="w-full p-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                     {
-                        window.location.hostname === "localhost" &&
+                        globalThis.location.hostname === "localhost" &&
                         <option value="local">Localhost</option>
                     }
                     <option value="render">Render</option>

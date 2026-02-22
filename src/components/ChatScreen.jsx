@@ -13,15 +13,14 @@ const ChatScreen = () => {
 
     return (
         <div className="relative bg-gray-900 h-screen flex flex-col pl-24 overflow-hidden">
-            <div className="flex flex-grow gap-4">
+            <div className="flex grow gap-4">
 
                 <div className="w-80 border-slate-400">
                     <UserList setChatUser={handleChatUser} />
                 </div>
 
-                <div className="flex-grow rounded-md overflow-hidden shadow-slate-300">
+                <div className="grow rounded-md overflow-hidden shadow-slate-300">
                     <IndividualChatScreen chatUser={chatUser} />
-
                 </div>
 
             </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
+import PropTypes from "prop-types";
 import DuoIcon from "@mui/icons-material/Duo";
 import CallIcon from "@mui/icons-material/Call";
 import { Tooltip } from "@mui/material";
@@ -21,7 +22,7 @@ const IndividualChatScreen = (props) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        if (!currentUser || !chatUser) return;
+        if (Object.entries(currentUser).length === 0 || Object.entries(chatUser).length === 0) return;
         const formData = {
           senderId: currentUser.id,
           receiverId: chatUser.id,
@@ -34,7 +35,7 @@ const IndividualChatScreen = (props) => {
     };
 
     fetchMessages();
-  }, [chatUser, currentUser]);
+  }, [chatUser]);
 
   // Dynamic socket connection
   useEffect(() => {
@@ -79,7 +80,7 @@ const IndividualChatScreen = (props) => {
     }
   };
 
-  if (!chatUser) {
+  if (Object.entries(chatUser).length === 0) {
     return (
       <div className="flex items-center justify-center h-full bg-gray-900 text-white">
         <div className="text-center">
@@ -91,15 +92,19 @@ const IndividualChatScreen = (props) => {
   }
 
   return (
-    <div className="relative h-full bg-gray-800 flex flex-col border-l-[1px] border-slate-500">
+    <div className="relative h-full bg-gray-800 flex flex-col border-l border-slate-500">
       <header className="flex items-center justify-between px-4 py-3 border-b border-slate-500 bg-gray-900 text-white shadow-sm">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-purple-200 rounded-full flex items-center justify-center font-bold text-purple-700">
-            <img
-              src={chatUser.avatar}
-              alt="Profile"
-              className="rounded-full"
-            />
+            {chatUser.avatar ? (
+              <img
+                src={chatUser.avatar}
+                alt={chatUser.fullname}
+                className="rounded-full"
+              />
+            ) : (
+              <span className="text-lg text-gray-500">{chatUser.fullname.charAt(0)}</span>
+            )}
           </div>
           <div className="flex flex-col">
             <h1 className="text-lg font-semibold">{chatUser.fullname}</h1>
@@ -115,10 +120,10 @@ const IndividualChatScreen = (props) => {
         </div>
       </header>
 
-      <main className="flex-grow p-4 overflow-y-auto space-y-6 max-h-[calc(100vh-130px)] scrollbar-hide overflow-auto">
+      <main className="grow p-4 overflow-y-auto space-y-6 max-h-[calc(100vh-130px)] scrollbar-hide overflow-auto">
         {messages.map((msg, idx) => (
           <div
-            key={idx}
+            key={msg.id}
             className={`flex items-${msg.sender === currentUser.id ? "end" : "start"} space-x-3 ${msg.sender === currentUser.id ? "justify-end" : ""
               }`}
           >
@@ -134,9 +139,6 @@ const IndividualChatScreen = (props) => {
                   msg.created_at ? new Date(msg.created_at).toLocaleString() : new Date().toLocaleString()
                 }</p>
               </div>
-              {/* {msg.sender !== currentUser.id && (
-                <p className="text-xs font-semibold text-slate-200 mt-1">{msg.sender}</p>
-              )} */}
             </div>
           </div>
         ))}
@@ -173,3 +175,12 @@ const IndividualChatScreen = (props) => {
 };
 
 export default IndividualChatScreen;
+
+IndividualChatScreen.propTypes = {
+  chatUser: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    fullname: PropTypes.string,
+    avatar: PropTypes.string,
+    login: PropTypes.bool,
+  }).isRequired,
+};

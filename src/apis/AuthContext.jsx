@@ -9,14 +9,14 @@ const BACKEND_URLS = {
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-const [currentUser, setCurrentUser] = useState(() => {
-  const savedUser = localStorage.getItem('currentUser');
-  return savedUser ? JSON.parse(savedUser) : null;
-});
+  const [currentUser, setCurrentUser] = useState(() => {
+    const savedUser = localStorage.getItem('currentUser');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
   const getInitialBackend = () => {
     const saved = localStorage.getItem("selectedBackend");
-    const defaultBackend = window.location.hostname === "localhost" ? "local" : "render";
+    const defaultBackend = globalThis.location.hostname === "localhost" ? "local" : "render";
     return saved || defaultBackend;
   };
 
@@ -30,12 +30,12 @@ const [currentUser, setCurrentUser] = useState(() => {
   };
 
   useEffect(() => {
-  if (currentUser) {
-    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-  } else {
-    localStorage.removeItem('currentUser');
-  }
-}, [currentUser]);
+    if (currentUser) {
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('currentUser');
+    }
+  }, [currentUser]);
 
 
   const contextValue = useMemo(() => ({

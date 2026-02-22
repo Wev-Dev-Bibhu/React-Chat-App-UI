@@ -15,7 +15,10 @@ export const ScreenApis = () => {
             });
             cookie.set("token", response.data.data.token, { path: "/" });
             cookie.set("currentUser", response.data.data.userData, { path: "/" });
-            return response.data;
+            if (response.status === 200) {
+                return response.data;
+            }
+            return [];
         } catch (error) {
             throw error.response?.data || error.message;
         }
@@ -27,7 +30,10 @@ export const ScreenApis = () => {
                 headers: { "Content-Type": "application/json" },
             });
             cookie.set("token", response.data.data.token, { path: "/" });
-            return response.data;
+            if (response.status === 200) {
+                return response.data;
+            }
+            return [];
         } catch (error) {
             throw error.response?.data || error.message;
         }
@@ -39,7 +45,10 @@ export const ScreenApis = () => {
                 params: formData,
                 headers: { "Content-Type": "application/json" },
             });
-            return response.data;
+            if (response.status === 200) {
+                return response.data;
+            }
+            return [];
         } catch (error) {
             console.error("Error fetching users:", error.response || error.message || error);
             return [];
@@ -52,7 +61,10 @@ export const ScreenApis = () => {
                 params: formData,
                 headers: { "Content-Type": "application/json" },
             });
-            return response.data;
+            if (response.status === 200) {
+                return response.data;
+            }
+            return [];
         } catch (error) {
             console.error("Error fetching messages:", error.response || error.message || error);
             return [];
@@ -64,7 +76,10 @@ export const ScreenApis = () => {
             const response = await axios.post(`${apiUrl}/update-user`, formData, {
                 headers: { "Content-Type": "application/json" },
             });
-            return response.data;
+            if (response.status === 200) {
+                return response.data;
+            }
+            return [];
         } catch (error) {
             throw error.response?.data || error.message;
         }
